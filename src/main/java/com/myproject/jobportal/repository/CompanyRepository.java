@@ -8,6 +8,8 @@ package com.myproject.jobportal.repository;
 //I will try to extend the interface available from the Spring Data JPA.
 //The interface is JpaRepository.
 
+import com.myproject.jobportal.entity.Company;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository //Optional annotation is completely optional.Even though if you're not mentioning these annotations, still the bean of this interface
@@ -34,6 +36,6 @@ import org.springframework.stereotype.Repository;
 
 //Let's try to do the same.
 
-public interface CompanyRespository {
+public interface CompanyRepository extends JpaRepository<Company,Long> {
 
 }
