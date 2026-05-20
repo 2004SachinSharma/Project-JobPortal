@@ -1,5 +1,6 @@
 package com.myproject.jobportal.company.controller;
 
+import com.myproject.jobportal.dto.CompanyDto;
 import com.myproject.jobportal.entity.Company;
 import com.myproject.jobportal.service.impl.CompanyServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -27,8 +28,8 @@ public class CompanyController {
 //No need to make constructor manually generated, instead Lombok annotation will handle this job
 
     @GetMapping(version="1.0")
-    public ResponseEntity<List<Company>> getAllCompanies() {
-        List<Company> companyList = companyService.getAllCompanies();
+    public ResponseEntity<List<CompanyDto>> getAllCompanies() {
+        List<CompanyDto> companyList = companyService.getAllCompanies();
        return ResponseEntity.ok(companyList);
    }
 
@@ -36,5 +37,4 @@ public class CompanyController {
     public ResponseEntity<String> getAllCompanies2() {
         return ResponseEntity.ok("All Companies2");
     }
-
 }
