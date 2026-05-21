@@ -26,8 +26,13 @@ public class CompanyServiceImpl implements ICompanyService {
     public List<CompanyDto> getAllCompanies(){
 
         List<Company> companyList = companyRepository.findAll();
-         return  companyList.stream().map(this::transformToDto).collect(Collectors.toList());
+        // companyList: Database se aayi hui Company objects ki list.
 
+        return companyList.stream().map(this::transformToDto).collect(Collectors.toList());
+        // .stream(): List ko process karne ke liye ek sequence (dhara) mein badalta hai.
+        // .map(this::transformToDto): Har ek 'Company' object ke liye 'transformToDto' method ko call karta hai.
+        //                            (Agar list mein 10 companies hain, toh ye 10 baar call hoga aur 10 CompanyDto return karega).
+        // .collect(Collectors.toList()): Saare returned CompanyDto objects ko ik इकट्ठा karke ek nayi List banata hai.
     }
 
     private CompanyDto transformToDto(Company company) {
