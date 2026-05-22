@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CompanyServiceImpl implements ICompanyService {
 
-   private final CompanyRepository companyRepository;
+    private final CompanyRepository companyRepository;
 
 
 //    @Autowired
@@ -23,7 +23,7 @@ public class CompanyServiceImpl implements ICompanyService {
 //    }
 
     @Override
-    public List<CompanyDto> getAllCompanies(){
+    public List<CompanyDto> getAllCompanies() {
 
         List<Company> companyList = companyRepository.findAll();
         // companyList: Database se aayi hui Company objects ki list.
@@ -33,6 +33,7 @@ public class CompanyServiceImpl implements ICompanyService {
         // .map(this::transformToDto): Har ek 'Company' object ke liye 'transformToDto' method ko call karta hai.
         //                            (Agar list mein 10 companies hain, toh ye 10 baar call hoga aur 10 CompanyDto return karega).
         // .collect(Collectors.toList()): Saare returned CompanyDto objects ko ik इकट्ठा karke ek nayi List banata hai.
+        //aur firr wo list return ho jaati h 'return' keyword se.
     }
 
     private CompanyDto transformToDto(Company company) {
