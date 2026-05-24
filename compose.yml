@@ -1,0 +1,65 @@
+services:
+#  Database is jobportal, username and password is root at-least for now: This database was created inside the volume during the first boot.
+#  see Because of your Volumes line, the settings from the "First Run" of this compose.yml are now "baked" into your computer's disk.
+#  whenever we want to change these "permanent" settings, you just delete the D:\myDockerVolumes\jobportaldata_volume folder and let Docker recreate it from the new compose.yml values.
+#  If you try to change any credential here, it would result in runtime failure... In the volume of this service, the values there are already setup from the first run of this service
+#  at the time of container creation, if you want to change any credential, then delete the container and rerun this service, with new credentials simple!!
+
+#  and one more thing, this .yml file does not have to do anything by application.properties file, this .properties file also have these database credentials, but its basically for any
+#  db or any other setup we want on our local system or want to change the credentials through Env. variables, according to the various environments i.e., development, testing, production, etc.
+#  while this compose.yml is specifically only for the docker, basically the instructions to the Docker Engine, for configuration to set up the containers, this process is called Container Orchestration.
+
+#  diff in both compose.yml and application.properties
+  #compose.yml
+  #Work: Database container ko kaisa banana hai (Image, Port, Volume).
+  #Scope: Docker Engine ke liye instruction.
+  #Responsibility: Container Setup.
+
+  #  diff in both compose.yml and application.properties (for now just in the context of DB)
+  #compose.yml
+  #Work: Database container ko kaisa banana hai (Image, Port, Volume).
+  #Scope: Docker Engine ke liye instruction.
+  #Responsibility: Container Setup.
+
+  #application.properties
+  #Work: Java app ko database se kaise connect karna hai (URL, Username, Password).
+  #Scope: Spring Boot Application ke liye instruction.
+  #Responsibility: Database Connectivity.
+
+#  2. Iske peeche ka logic
+#  Aapne bahut sahi point uthaya hai. Jab aap professional software developer bante hain, toh aap separation of concerns rakhte hain:
+#  Infrastructure as Code (IaC): Aapka compose.yml batata hai ki "Mujhe MySQL ka ek container chahiye, port 3306 par, aur data yahan save hona chahiye."
+#  App Configuration: Aapki Spring Boot application.properties batati hai ki "Mujhe jdbc:mysql://localhost:3306/jobportal par jana hai aur ye user/pass use karna hai."
+
+#  3. Kya ye "Sirf" Docker ke liye hai?
+#  Haan. Isme aap kabhi bhi Java code ya React ka logic nahi likhte. Iska scope sirf containerization tak limited hai.
+   #Ek Pro-tip: Professional projects mein hum Environment Variables ka use karte hain taaki password dono jagah (Docker aur Java) ek hi jagah se aaye.
+   #  Aap ek .env file bana sakte hain.
+   #compose.yml mein MYSQL_ROOT_PASSWORD: ${DB_PASSWORD} likh sakte hain.
+   #  Wahi same variable aap application.properties mein bhi use kar sakte hain.
+#  Isse ye fayda hota hai ki agar aapko password badalna hai, toh aapko sirf ek jagah badalna padega!
+
+  dbservice:
+    image: mysql:latest
+    container_name: jobportaldb
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: jobportal
+    volumes:
+      - D:\myDockerVolumes\jobportaldata_volume:/var/lib/mysql
+
+
+#  dbservice1:
+#    image: mysql:latest
+#    container_name: jobportaldb2
+#    ports:
+#      - "3307:3306"
+#    environment:
+#      MYSQL_ROOT_PASSWORD: root
+#      MYSQL_ROOT_DATABASE: jo
+#    volumes:
+#      - D:\myDockerVolumes\jobportaldata_volume1:/var/lib/mysql
+
+
