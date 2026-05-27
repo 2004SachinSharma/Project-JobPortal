@@ -1,9 +1,9 @@
-package com.myproject.jobportal.service.impl;
+package com.myproject.jobportal.company.service.impl;
 
 import com.myproject.jobportal.dto.CompanyDto;
 import com.myproject.jobportal.entity.Company;
 import com.myproject.jobportal.repository.CompanyRepository;
-import com.myproject.jobportal.service.ICompanyService;
+import com.myproject.jobportal.company.service.ICompanyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
