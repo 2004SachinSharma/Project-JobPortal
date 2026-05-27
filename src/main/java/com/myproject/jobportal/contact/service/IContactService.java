@@ -1,4 +1,9 @@
 package com.myproject.jobportal.contact.service;
 
-public class IContactService {
+import com.myproject.jobportal.dto.CompanyDto;
+import com.myproject.jobportal.dto.ContactRequestDto;
+
+public interface IContactService {
+
+    void saveContact(ContactRequestDto companyDto) ;
 }

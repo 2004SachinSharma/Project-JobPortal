@@ -36,7 +36,7 @@ CREATE TABLE contact (
                          updated_at TIMESTAMP NULL,
                          updated_by VARCHAR(20) NULL,
 
-                         user_type VARCHAR(50) NOT NULL,
+user_type VARCHAR(50) NOT NULL,
 
-                         PRIMARY KEY (id)
+PRIMARY KEY (id)
 );

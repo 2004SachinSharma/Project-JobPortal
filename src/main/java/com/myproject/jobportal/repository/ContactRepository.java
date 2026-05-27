@@ -1,4 +1,7 @@
 package com.myproject.jobportal.repository;
 
-public interface ContactRepository extends org.springframework.data.jpa.repository.JpaRepository<com.myproject.jobportal.entity.Contact, java.lang.Long> {
+import com.myproject.jobportal.entity.Contact;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ContactRepository extends JpaRepository<Contact, Long> {
 }
