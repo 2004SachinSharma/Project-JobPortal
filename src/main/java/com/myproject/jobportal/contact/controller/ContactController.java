@@ -17,7 +17,7 @@ public class ContactController {
 
     public final ContactServiceImpl contactService;
 
-    @PostMapping()
+    @PostMapping(version = "1.0")
     public ResponseEntity<String> saveContact(@RequestBody ContactRequestDto contactdto) {
 
         contactService.saveContact(contactdto);
