@@ -49,8 +49,9 @@ public class ContactServiceImpl implements IContactService {
     //Let's leverage that here for copying dto fields' data to contact entity's fields
 
         BeanUtils.copyProperties(contactRequestDto,contact);
-        contact.setCreatedAt(Instant.now());
-        contact.setCreatedBy("System");
+//        contact.setCreatedAt(Instant.now());
+//        contact.setCreatedBy("System");
+        //Because now JPA Auditing Automatically Handle this
         return contact;
 
     }

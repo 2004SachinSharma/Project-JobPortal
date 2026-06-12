@@ -14,18 +14,14 @@ import java.time.Instant;
 @ToString //Generates a toString() method for this entity, which includes the key = value pair, i.e., "Contact(id=7, createdAt=2026-05-27T16:..."
 @Entity
 @Table(name = "contact")
-public class Contact {
+public class Contact extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private  Long id;
 
-    @Column(name = "created_at", nullable = false)
-    private Instant createdAt;
-
-    @Column(name = "created_by", nullable = false, length = 20)
-    private String createdBy;
+    //Shifted Created_at and Created_by Columns to the BaseEntityClass in order to leverage JPA Auditing
 
     @Column(name = "email", nullable = false, length = 255)
     private String email;
@@ -44,11 +40,7 @@ public class Contact {
     @Column(name = "subject", nullable = false, length = 255)
     private String subject;
 
-    @Column(name = "updated_at")
-    private Instant updatedAt;
-
-    @Column(name = "updated_by", length = 20)
-    private String updatedBy;
+    //Similarly, Shifted Updated_at and Updted_by Columns to the BaseEntityClass in order to leverage JPA Auditing
 
     @Column(name = "user_type", nullable = false, length = 50)
     private String userType;
