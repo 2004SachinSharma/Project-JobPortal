@@ -2,6 +2,7 @@ package com.myproject.jobportal.dto;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.List;
 
 /**
  * Data Transfer Object (DTO) for {@link com.myproject.jobportal.entity.Company}.
@@ -51,6 +52,7 @@ public record CompanyDto(
         String description,
         Integer employees,
         String website,
-        Instant createdAt
+        Instant createdAt,
+        List<JobDto> jobs
 ) {
 }

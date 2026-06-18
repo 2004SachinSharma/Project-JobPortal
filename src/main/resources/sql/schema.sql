@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS companies;
 -- Create companies table
 CREATE TABLE IF NOT EXISTS companies
 (

@@ -6,7 +6,9 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity //Indication to Spring DataJPA that this specific class represents a table in the DB
 @Table(name="companies")
@@ -53,7 +55,10 @@ public class Company extends BaseEntity {
      @Column(name = "WEBSITE", length = 500)
      private String website;
 
-     //Shifted Created_at and Created_by Columns to the BaseEntityClass in order to leverage JPA Auditing
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Job> jobs = new ArrayList<>();
+
+    //Shifted Created_at and Created_by Columns to the BaseEntityClass in order to leverage JPA Auditing
 
      //Similarly, Shifted Updated_at and Updted_by Columns to the BaseEntityClass in order to leverage JPA Auditing
 

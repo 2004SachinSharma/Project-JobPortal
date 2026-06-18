@@ -1,7 +1,9 @@
 package com.myproject.jobportal.company.service.impl;
 
 import com.myproject.jobportal.dto.CompanyDto;
+import com.myproject.jobportal.dto.JobDto;
 import com.myproject.jobportal.entity.Company;
+import com.myproject.jobportal.entity.Job;
 import com.myproject.jobportal.repository.CompanyRepository;
 import com.myproject.jobportal.company.service.ICompanyService;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +30,7 @@ public class CompanyServiceImpl implements ICompanyService {
         List<Company> companyList = companyRepository.findAll();
         // companyList: Database se aayi hui Company objects ki list.
 
-        return companyList.stream().map(this::transformToDto).collect(Collectors.toList());
+        return companyList.stream().map(this::transformCompanyToDto).collect(Collectors.toList());
         // .stream(): List ko process karne ke liye ek sequence (dhara) mein badalta hai.
         // .map(this::transformToDto): Har ek 'Company' object ke liye 'transformToDto' method ko call karta hai.
         //                            (Agar list mein 10 companies hain, toh ye 10 baar call hoga aur 10 CompanyDto return karega).
@@ -36,7 +38,11 @@ public class CompanyServiceImpl implements ICompanyService {
         //aur firr wo list return ho jaati h 'return' keyword se.
     }
 
-    private CompanyDto transformToDto(Company company) {
+    private CompanyDto transformCompanyToDto(Company company) {
+
+        List<JobDto> jobsDtos= company.getJobs().stream().map(this::transformJobToDto).collect(Collectors.toList());
+
+
         return new CompanyDto(
                 company.getId(),
                 company.getName(),
@@ -49,10 +55,38 @@ public class CompanyServiceImpl implements ICompanyService {
                 company.getDescription(),
                 company.getEmployees(),
                 company.getWebsite(),
-                company.getCreatedAt()
+                company.getCreatedAt(),
+                jobsDtos
         );
     }
 
-
+    private JobDto transformJobToDto(Job job) {
+        return new JobDto(
+                job.getId(),
+                job.getTitle(),
+                job.getCompany().getId(),
+                job.getCompany().getName(),
+                job.getCompany().getLogo(),
+                job.getLocation(),
+                job.getWorkType(),
+                job.getJobType(),
+                job.getCategory(),
+                job.getExperienceLevel(),
+                job.getSalaryMin(),
+                job.getSalaryMax(),
+                job.getSalaryCurrency(),
+                job.getSalaryPeriod(),
+                job.getDescription(),
+                job.getRequirements(),
+                job.getBenefits(),
+                job.getPostedDate(),
+                job.getApplicationDeadline(),
+                job.getApplicationsCount(),
+                job.getFeatured(),
+                job.getUrgent(),
+                job.getRemote(),
+                job.getStatus()
+        );
+    }
 
 }
