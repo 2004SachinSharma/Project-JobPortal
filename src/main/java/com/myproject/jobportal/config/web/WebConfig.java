@@ -7,6 +7,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.ApiVersionConfigurer;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -123,15 +124,15 @@ public class WebConfig implements WebMvcConfigurer {
 
 
 
-//    @Override
-//    public void addCorsMappings(CorsRegistry registry) {
-//
-//        registry.addMapping("/**")
-//                .allowedOrigins("http://localhost:3000")
-//                .allowedMethods("GET", "POST", "PUT", "DELETE")
-//                .allowedHeaders("*")
-//                .allowCredentials(true).maxAge(3600);
-//    }
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+
+        registry.addMapping("/**")
+                .allowedOrigins("http://localhost:3000")
+                .allowedMethods("GET", "POST", "PUT", "DELETE")
+                .allowedHeaders("*")
+                .allowCredentials(true).maxAge(3600);
+    }
 
     //Does the same thing as CorsFilter but addCorsMappings() configures CORS at Spring MVC level, while CorsFilter handles CORS at servlet filter level before requests reach Spring Security or controllers, making it more suitable for complex secured applications. So basically, CorsFilter is the recommended way to apply CORS policy.
 
