@@ -67,8 +67,16 @@ public class JobPortalSecurityConfig {
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) {
 
         return http.authorizeHttpRequests((requests) -> ((AuthorizeHttpRequestsConfigurer.AuthorizedUrl) requests.anyRequest()).authenticated())
-                .formLogin(Customizer.withDefaults())
-                .httpBasic(Customizer.withDefaults())
+//                .formLogin(Customizer.withDefaults())
+//                .httpBasic(Customizer.withDefaults()) //You might think commenting out them will make the form and
+//                input pop-up to disappear from the browser and spring security have configured to not read the
+//                "Authorization header" from the request to authenticate and the default login form as well, will be
+//                disappeared from the client or browser.No it will not work in that way, rather it will redirect to configure
+//                default configuration. You can do that but not by commenting but by disabling them. See below how.
+
+//                The correct way to configure it:
+                .formLogin(form -> form.disable())
+                .httpBasic(withDefaults())
                 .build();
 
     }
