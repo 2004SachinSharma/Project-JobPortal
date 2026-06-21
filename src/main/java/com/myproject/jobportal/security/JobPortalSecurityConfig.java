@@ -68,7 +68,23 @@ public class JobPortalSecurityConfig {
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) {
 
-        return http.authorizeHttpRequests((requests) -> ((AuthorizeHttpRequestsConfigurer.AuthorizedUrl) requests.anyRequest()).authenticated())
+        /**Internal Mechanism: Configures the AuthorizationFilter to use an AuthorizationManager that checks if the current Authentication object is fully authenticated (i.e., it is not anonymous and not remember-me, depending on specific configuration, but generally means the user has logged in successfully).
+           Filter Chain Behaviour: The request goes through the preceding filter chain (SecurityContext, CORS, etc.). When it reaches the authorization step, the filter inspects the security context to verify the user's identity. If no valid authentication exists, it blocks the request.
+           In Simple Terms: The request is allowed only if the user is logged in. If they are anonymous (not logged in), authorization fails and they are either redirected to a login page or issued a 401 Unauthorized / 403 Forbidden error.
+         */
+//        return http.authorizeHttpRequests((requests) -> ((AuthorizeHttpRequestsConfigurer.AuthorizedUrl) requests.anyRequest()).authenticated())
+
+        /**
+         * Internal Mechanism: Configures the AuthorizationFilter to use an AuthorizationManager that always returns a "deny/rejected" decision.  Filter Chain Behaviour: The request still goes through the preceding filter chain (SecurityContext, CORS, etc.), but it is blocked immediately at the authorization step.In Simple Terms: Regardless of whether the user is authenticated, anonymous, or an admin, authorization always fails (false) and throws an access-denied exception.  */
+//        return http.authorizeHttpRequests((requests) -> ((AuthorizeHttpRequestsConfigurer.AuthorizedUrl) requests.anyRequest()).denyAll())
+
+        /**permitAll() in Spring Security configures the AuthorizationFilter to use an AuthorizationManager that always returns an “allow/granted” decision.
+         The request still goes through the full filter chain (SecurityContext, CORS, etc.), but the authorization step does not block it.
+         In simple terms: authentication may or may not exist, but authorization always passes (true).*/
+
+        return http.authorizeHttpRequests((requests) -> ((AuthorizeHttpRequestsConfigurer.AuthorizedUrl) requests.anyRequest()).permitAll()) //PermitAll permits all requests by bypassing the authentication. Means the request is still checked by the security framework, but the framework chooses to always open the gate (true) rather than blocking it.
+
+
 //                .formLogin(Customizer.withDefaults())
 //                .httpBasic(Customizer.withDefaults()) //You might think commenting out them will make the form and
 //                input pop-up to disappear from the browser and spring security have configured to not read the
