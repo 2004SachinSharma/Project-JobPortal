@@ -63,7 +63,7 @@ public class JobPortalSecurityConfig {
 
     // Instead, we use the below type custom overriding of this method :
 
-
+    @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) {
 
         return http.authorizeHttpRequests((requests) -> ((AuthorizeHttpRequestsConfigurer.AuthorizedUrl) requests.anyRequest()).authenticated())
