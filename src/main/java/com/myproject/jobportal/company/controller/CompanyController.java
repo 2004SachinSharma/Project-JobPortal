@@ -1,5 +1,6 @@
 package com.myproject.jobportal.company.controller;
 
+import com.myproject.jobportal.company.service.ICompanyService;
 import com.myproject.jobportal.dto.CompanyDto;
 import com.myproject.jobportal.company.service.impl.CompanyServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ import java.util.List;
 
 public class CompanyController {
 
-    private final CompanyServiceImpl companyService;
+    private final ICompanyService companyService;
 
 /**    @Autowired //Since only one constructor; @Autowired is Optional here.
     CompanyController(CompanyServiceImpl companyService) {

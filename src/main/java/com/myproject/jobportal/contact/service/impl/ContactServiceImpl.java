@@ -20,7 +20,8 @@ public class ContactServiceImpl implements IContactService {
 
     private final ContactRepository contactRepository;
 
-    public void saveContact(ContactRequestDto contactRequestDto){
+    public boolean saveContact(ContactRequestDto contactRequestDto){
+        boolean result = false;
 
 /*
        Contact contact = contactRepository.save(transformToEntity(contactRequestDto));
@@ -35,6 +36,11 @@ public class ContactServiceImpl implements IContactService {
 */
         Contact contact = contactRepository.save(this.transformToEntity(contactRequestDto));
         System.out.println(contact);//Just for logging purpose, but this is not the professional one. Will explore one Log.info(0 later
+
+        if(contact != null && contact.getId() != null) {
+            result = true;
+        }
+        return result;
     }
 
 
