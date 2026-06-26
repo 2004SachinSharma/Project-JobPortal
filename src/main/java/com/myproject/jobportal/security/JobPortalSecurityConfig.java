@@ -95,6 +95,10 @@ public class JobPortalSecurityConfig {
 //                The correct way to configure it:
                 .formLogin(form -> form.disable())
                 .httpBasic(withDefaults())
+                .authorizeHttpRequests(requests -> requests.requestMatchers("/api/companies").permitAll() // Allows all users (authenticated or not) to access the /api/companies endpoint without a login. Or Publicly viewable, means this particular api end-point is non-secured and anyone can view it publicly without the client required to be authenticated.
+                        // Remember when we only had .permitAll() without the .requestMatchers("") i.e. "http.authorizeHttpRequests((requests) -> ((AuthorizeHttpRequestsConfigurer.AuthorizedUrl) requests.anyRequest()).permitAll())"  (look on the github with commit id: 07ce52e, learnt in previous lessons), it would make all the api-endpoints public to access without the client to be log in or authenticated. That's the difference between specifying the endpoints to permitAll() and simply putting permitAll().
+                                                           .requestMatchers("/api/contacts").authenticated()//It does opposite to the above configuration, it Restricts access to the /api/contacts endpoint, allowing only logged-in users to view or interact with it. you can imagine like this protects the api-endpoints from unauthenticated access while above one says I will make all these api endpoints to be publicly available to be accessed without the authentication of the client
+                )
                 .build();
 
     }
