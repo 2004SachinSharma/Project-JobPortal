@@ -66,7 +66,7 @@ public class JobPortalSecurityConfig {
     // Instead, we use the below type custom overriding of this method :
 
     @Bean
-    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) {
+    SecurityFilterChain customSecurityFilterChain(HttpSecurity http) {
 
         /**Internal Mechanism: Configures the AuthorizationFilter to use an AuthorizationManager that checks if the current Authentication object is fully authenticated (i.e., it is not anonymous and not remember-me, depending on specific configuration, but generally means the user has logged in successfully).
            Filter Chain Behaviour: The request goes through the preceding filter chain (SecurityContext, CORS, etc.). When it reaches the authorization step, the filter inspects the security context to verify the user's identity. If no valid authentication exists, it blocks the request.
