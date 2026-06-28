@@ -120,7 +120,7 @@ public class WebConfig implements WebMvcConfigurer {
         return new CorsFilter(source);
 
     }
-
+*/ //CorsConfiguration shifted to the JobPortalSecurityConfig from here
 
 
 
