@@ -134,7 +134,37 @@ public class JobPortalSecurityConfig {
 
     }
 
-    //
+    //Kindly read the below note for at least one time
+    /**
+     * METHOD 1: Centralized Request Matching (Enterprise Best Practice)
+     * <p>
+     * Defines perimeter security explicitly at the Web Layer using native Ant path matching.
+     * Implements a "secure-by-default" mindset by maintaining a transparent map of the
+     * application's attack surface in a single, auditable location.
+     * </p>
+     *
+     * @see <a href="https://docs.spring.io/spring-security/reference/servlet/authorization/authorize-requests.html">Spring Security Authorization</a>
+     */
+
+    /**
+     * METHOD 2: Regular Expression Request Matching
+     * <p>
+     * WARNING: NOT RECOMMENDED FOR PRODUCTION.
+     * Inspects URIs using regular expressions to match visibility markers (e.g., '.*public$').
+     * This tightly couples resource paths to security classifications, violating
+     * RESTful resource-oriented design principles and risking brittle API routing.
+     * </p>
+     */
+
+    /**
+     * METHOD 3: Externalized Path Beans Configuration
+     * <p>
+     * WARNING: NOT RECOMMENDED FOR PRODUCTION.
+     * Isolates URI collections into dedicated Spring Beans or configuration fragments.
+     * While occasionally used in small-scale environments to isolate configuration metadata,
+     * this pattern creates architectural fragility and bloats the Spring ApplicationContext.
+     * </p>
+     */
 
 }
 
