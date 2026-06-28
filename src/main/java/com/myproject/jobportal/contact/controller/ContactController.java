@@ -36,7 +36,7 @@ public class ContactController {
     @GetMapping(version = "1.0")
     public ResponseEntity<String> fetchOpenContacts(@RequestParam(defaultValue = "Job Seeker")
                                                     @Validated @NotBlank(message = "Status can not be blank")
-                                                    @Size(min = 4,message = "Status lenght should be of minimum 4 chars") String status) {
+                                                    @Size(min = 4,message = "Status length should be of minimum 4 chars") String status) {
         return ResponseEntity.ok("These are the contacts with the given status: " + status);
     }
 
