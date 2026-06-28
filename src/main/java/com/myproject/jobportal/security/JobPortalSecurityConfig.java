@@ -121,10 +121,9 @@ public class JobPortalSecurityConfig {
 
                         // METHOD 3: Defining public/secured API endpoints in a separate File/Bean (PathsConfig.java)
 
-                        // CRITICAL NOTE: While this approach is sometimes taught to improve readability and shorten the main SecurityConfig file, it is NOT an enterprise best practice.
-                        // Storing endpoints as standalone beans introduces architectural fragility and tight coupling.
-                        // Additionally, using keywords like '/public' in the path violates resource-oriented API design, meaning any future security changes will change the URL and break external clients.
-                        // VERDICT: Only use this pattern if required for an assignment; in real-world applications, manage paths directly in the filter chain using String[] arrays or utilize Method-Level Security (@PermitAll).
+                                // CRITICAL NOTE: Making a separate file with Spring @Beans to return Lists is a bad practice because it bloats the application container.
+                                // BUT our active code below does not use beans! We are using simple static String[] arrays (PathsConfig.PUBLIC_PATHS).
+                                // Using a static array from a separate class is completely clean, fast, and a production-ready way to manage Method 1.
 
                        requests.requestMatchers( PathsConfig.PUBLIC_PATHS).permitAll()
                                .requestMatchers(PathsConfig.SECURED_PATHS).authenticated()
@@ -150,7 +149,8 @@ public class JobPortalSecurityConfig {
     /**
      * METHOD 2: Regular Expression Request Matching
      * <p>
-     * WARNING: NOT RECOMMENDED FOR PRODUCTION.
+     * ADVICE: Use only when regular-expression matching is genuinely required; prefer Ant-style
+     * path patterns (/api/**) for most applications because they are simpler and more maintainable.
      * Inspects URIs using regular expressions to match visibility markers (e.g., '.*public$').
      * This tightly couples resource paths to security classifications, violating
      * RESTful resource-oriented design principles and risking brittle API routing.
@@ -158,12 +158,12 @@ public class JobPortalSecurityConfig {
      */
 
     /**
-     * METHOD 3: Externalized Path Beans Configuration
+     * METHOD 3: Separated Static Path Arrays
      * <p>
-     * WARNING: NOT RECOMMENDED FOR PRODUCTION.
-     * Isolates URI collections into dedicated Spring Beans or configuration fragments.
-     * While occasionally used in small-scale environments to isolate configuration metadata,
-     * this pattern creates architectural fragility and bloats the Spring ApplicationContext.
+     * Isolates URI string arrays into a dedicated utility class (PathsConfig.java).
+     * This keeps the main filter configuration extremely clean, short, and readable
+     * by eliminating repeated matching lines while avoiding Spring container bloat.
+     * When combined with explicit matching, this provides a highly maintainable setup.
      * </p>
      */
 
