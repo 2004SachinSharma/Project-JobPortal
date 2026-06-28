@@ -167,5 +167,52 @@ public class JobPortalSecurityConfig {
      * </p>
      */
 
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+      CorsConfiguration corsConfiguration = new CorsConfiguration();
+// setAllowedOrigins: Here, we only allow specific URLs that belong to our trusted UI.
+// SECURITY NOTE: We should avoid using the wildcard '*' here because it means "any domain in the world."
+// If '*' is used, hackers could easily send requests to your server from their fake websites (Security Risk).
+// Without this configuration, the browser would block requests from http://localhost:5173, throwing a 'CORS Policy Error'.
+        corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
+
+// setAllowedMethods: The server informs the browser about which HTTP actions (GET, POST, etc.) the client is permitted to perform.
+// If this is not explicitly mentioned, the browser will only allow 'Safe' requests (like a simple GET) by default.
+        corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+
+// corsConfiguration.setAllowedMethods(Collections.singletonList("*")); // This allows all methods.
+// This is a static method from the java.util.Collections class that creates an immutable List containing exactly ONE item.
+// It is more memory-efficient than Arrays.asList("*") when you only need to store a single element.
+
+
+// setAllowedHeaders: This defines which extra metadata (Headers) the client is allowed to send in the request.
+// For example, 'Content-Type' (required for sending JSON data). If the client sends a header that is not listed here, the browser will directly reject the entire request.
+
+// allowedHeaders() specifies which request headers are permitted during cross-origin requests.
+// If the frontend sends headers not included in Access-Control-Allow-Headers, the browser blocks the actual request after the preflight validation fails.
+        corsConfiguration.setAllowedHeaders(Arrays.asList("Content-Type"));
+
+// setAllowCredentials: Set this to 'true' if the browser needs to send Cookies or Authorization headers.
+// Note: If this is set to 'true', using the wildcard '*' in setAllowedOrigins is strictly prohibited (Security Rule).
+        corsConfiguration.setAllowCredentials(true);
+
+// setMaxAge: This tells the browser how long (in seconds) it should cache the CORS response (Pre-flight result).
+// Example: 3600L (1 hour). This means the browser won't repeatedly send 'OPTIONS' (Pre-flight) requests for the next hour,
+// which speeds up the application and reduces the load on the server.
+        corsConfiguration.setMaxAge(36000L);
+
+// 2. UrlBasedCorsConfigurationSource: This acts as a mapper that defines where these CORS rules should be applied.
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+
+// registerCorsConfiguration: This specifies which server paths/endpoints will enforce the rules defined above.
+// Example: "/**" means 'All endpoints'.
+// If we had written "/api/public/**", the rules would apply only to public APIs, leaving admin APIs uncovered.
+// If this line is omitted, the rules won't apply to any path, and the default browser blocking behavior will continue.
+        source.registerCorsConfiguration("/**", corsConfiguration);
+
+// 3. Final Step: The server packs all this configuration info into the 'Response Headers' (like Access-Control-Allow-Origin)
+// and sends it back to the browser. The browser then inspects these headers to decide whether to expose the data to the UI or block it.
+        return source;
+    }
 }
 
