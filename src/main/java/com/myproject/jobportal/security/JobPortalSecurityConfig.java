@@ -56,7 +56,7 @@ public class JobPortalSecurityConfig {
      * @return the fully configured {@link SecurityFilterChain}
      * @throws Exception if an error occurs during the security configuration build process
      */
-
+private final PathsConfig paths ; 
 
 //    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
 //        http.authorizeHttpRequests((requests) -> ((AuthorizeHttpRequestsConfigurer.AuthorizedUrl)requests.anyRequest()).authenticated());
