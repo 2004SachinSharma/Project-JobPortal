@@ -13,7 +13,7 @@ import java.util.List;
 
 /**@CrossOrigin(origins = {"http://localhost:5173"}) can use annotation as well but not recommended, as it specifies the CORS policy for this specific class or method level*/
 @RestController
-@RequestMapping("/companies")/** Generally we use {/api/...} prefix or in big enterprises (application_name/api/...) prefix just o indicate that this particular class exposes API*/
+@RequestMapping("/companies/public")/** Generally we use {/api/...} prefix or in big enterprises (application_name/api/...) prefix just o indicate that this particular class exposes API*/
 //But on every class level URI mentioning this prefix does not look good and it becomes overhead adding it to every class level URI, so we can put this prefix at one centralized place from where it would be added automatically
 
 @RequiredArgsConstructor/** {Lombok} annotation to generate constructor */
