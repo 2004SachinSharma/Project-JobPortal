@@ -84,6 +84,7 @@ public class JobPortalSecurityConfig {
 
 //        return http.authorizeHttpRequests((requests) -> ((AuthorizeHttpRequestsConfigurer.AuthorizedUrl) requests.anyRequest()).permitAll()) //PermitAll permits all requests by bypassing the authentication. Means the request is still checked by the security framework, but the framework chooses to always open the gate (true) rather than blocking it.
                 return http.csrf(csrfConfig -> csrfConfig.disable())
+                        .cors(corsConfig -> corsConfig.configurationSource(corsConfigurationSource()))
 
 //                .formLogin(Customizer.withDefaults())
 //                .httpBasic(Customizer.withDefaults()) //You might think commenting out them will make the form and
