@@ -101,6 +101,7 @@ public class JobPortalSecurityConfig {
                         requests.requestMatchers("/api/companies").permitAll() //Allows all users (authenticated or not) to access the /api/companies endpoint without a login. Or Publicly viewable, means this particular api end-point is non-secured and anyone can view it publicly without the client required to be authenticated.
                                 // Remember when we only had .permitAll() without the .requestMatchers("") i.e. "http.authorizeHttpRequests((requests) -> ((AuthorizeHttpRequestsConfigurer.AuthorizedUrl) requests.anyRequest()).permitAll())"  (look on the github with commit id: 07ce52e, learnt in previous lessons), it would make all the api-endpoints public to access without the client to be log in or authenticated. That's the difference between specifying the endpoints to permitAll() and simply putting permitAll().
                                 .requestMatchers("/api/contacts").authenticated()//It does opposite to the above configuration, it Restricts access to the /api/contacts endpoint, allowing only logged-in users to view or interact with it. you can imagine like this protects the api-endpoints from unauthenticated access while above one says I will make all these api endpoints to be publicly available to be accessed without the authentication of the client
+                                .anyRequest().denyAll()
 */
 
                                 // METHOD 2: (Focus on RegesReqMatcher in this 2nd method)
@@ -114,7 +115,9 @@ public class JobPortalSecurityConfig {
                                                 "/swagger-ui.html",
                                                 "/webjars/**"
                                         ).permitAll()
-                                        .requestMatchers("/api/contacts").authenticated()*/
+                                        .requestMatchers("/api/contacts").authenticated()
+                                        .anyRequestDenyAll()
+                                        */
 
                         // METHOD 3: Defining public/secured API endpoints in a separate File/Bean (PathsConfig.java)
 
@@ -125,7 +128,7 @@ public class JobPortalSecurityConfig {
 
                        requests.requestMatchers( PathsConfig.PUBLIC_PATHS).permitAll()
                                .requestMatchers(PathsConfig.SECURED_PATHS).authenticated()
-
+                               .anyRequest().denyAll()
 
                 )
                 .build();
