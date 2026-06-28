@@ -57,7 +57,7 @@ public class JobPortalSecurityConfig {
      * @return the fully configured {@link SecurityFilterChain}
      * @throws Exception if an error occurs during the security configuration build process
      */
-private final PathsConfig paths ; 
+
 
 //    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
 //        http.authorizeHttpRequests((requests) -> ((AuthorizeHttpRequestsConfigurer.AuthorizedUrl)requests.anyRequest()).authenticated());
@@ -106,7 +106,9 @@ private final PathsConfig paths ;
                                 .requestMatchers("/api/contacts").authenticated()//It does opposite to the above configuration, it Restricts access to the /api/contacts endpoint, allowing only logged-in users to view or interact with it. you can imagine like this protects the api-endpoints from unauthenticated access while above one says I will make all these api endpoints to be publicly available to be accessed without the authentication of the client
 */
 
-                                requests.requestMatchers(RegexRequestMatcher.regexMatcher(".*public$")).permitAll() //Though we don't have that situation right now but imagine a situation where you need to configure N no. of APIs to public, then you compulsorily have to write equal no. of .requestMatchers() as the line right above commented out. Right!. so let's leverage two things, the "uniformly ending path segment" and the RegexRequestMatcher to fast up the things.
+                                // METHOD 2: (Focus on RegesReqMatcher in this 2nd method)
+
+                               /* requests.requestMatchers(RegexRequestMatcher.regexMatcher(".*public$")).permitAll()//Though we don't have that situation right now, but imagine a situation where you need to configure N no. of APIs to public, then you compulsorily have to write equal no. of .requestMatchers() as the line right above commented out. Right!. so let's leverage two things, the "uniformly ending path segment" and the RegexRequestMatcher to fast up the things.
                                         .requestMatchers( //making Swagger-related APIs public to access without authentication
                                                 "/api/swagger-ui.html",
                                                 "/swagger-ui/**",
