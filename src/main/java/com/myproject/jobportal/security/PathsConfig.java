@@ -9,6 +9,7 @@ import java.util.List;
 public class PathsConfig {
 
     public static final String [] PUBLIC_PATHS = {"/api/companies/public",
+            "/api/contacts/public",
             "/api/swagger-ui.html",
             "/swagger-ui/**",
             "/api/v3/api-docs/**",
