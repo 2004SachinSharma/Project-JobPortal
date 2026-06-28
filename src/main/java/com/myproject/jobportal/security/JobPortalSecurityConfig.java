@@ -116,7 +116,19 @@ public class JobPortalSecurityConfig {
                                                 "/swagger-ui.html",
                                                 "/webjars/**"
                                         ).permitAll()
-                                        .requestMatchers("/api/contacts").authenticated()//It does opposite to the above configuration, it Restricts access to the /api/contacts endpoint, allowing only logged-in users to view or interact with it. you can imagine like this protects the api-endpoints from unauthenticated access while above one says I will make all these api endpoints to be publicly available to be accessed without the authentication of the client
+                                        .requestMatchers("/api/contacts").authenticated()*/
+
+                        // METHOD 3: Defining public/secured API endpoints in a separate File/Bean (PathsConfig.java)
+
+                        // CRITICAL NOTE: While this approach is sometimes taught to improve readability and shorten the main SecurityConfig file, it is NOT an enterprise best practice.
+                        // Storing endpoints as standalone beans introduces architectural fragility and tight coupling.
+                        // Additionally, using keywords like '/public' in the path violates resource-oriented API design, meaning any future security changes will change the URL and break external clients.
+                        // VERDICT: Only use this pattern if required for an assignment; in real-world applications, manage paths directly in the filter chain using String[] arrays or utilize Method-Level Security (@PermitAll).
+
+                       requests.requestMatchers( PathsConfig.PUBLIC_PATHS).permitAll()
+                               .requestMatchers(PathsConfig.SECURED_PATHS).authenticated()
+
+
                 )
                 .build();
 
