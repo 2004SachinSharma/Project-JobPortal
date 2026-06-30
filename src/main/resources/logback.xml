@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- This logging setup is production-ready for ELK on VM-based systems.
+        In Kubernetes environments, typically only console JSON logging is used out of both the Conosle and file logging. -->
+
+    <!-- ===================== -->
+    <!-- Environment-safe log path -->
+    <!-- ===================== -->
+    <property name="LOGS" value="${LOG_PATH:-./logs}" />
+
+    <!-- ===================== -->
+    <!-- Console Appender -->
+    <!-- ===================== -->
+    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+    </appender>
+
+    <!-- ===================== -->
+    <!-- Rolling File Appender -->
+    <!-- ===================== -->
+    <appender name="RollingFile"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <file>${LOGS}/jobportal.log</file>
+
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+
+
+        <!-- Modern rolling policy (size + time based) -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>
+                ${LOGS}/archived/jobportal-%d{yyyy-MM-dd}.%i.log
+            </fileNamePattern>
+            <maxFileSize>1MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <!-- ===================== -->
+    <!-- Root Logger -->
+    <!-- ===================== -->
+    <root level="INFO">
+        <appender-ref ref="RollingFile"/>
+        <appender-ref ref="Console"/>
+    </root>
+
+    <!-- ===================== -->
+    <!-- Application-specific INFO logs -->
+    <!-- This is Application-specific logger for com.eazybytes.jobportal package -->
+    <!-- Sets log level to INFO and prevents log duplication via additivity=false -->
+    <!-- ===================== -->
+
+    <logger name="com.eazybytes.jobportal"
+            level="INFO"
+            additivity="false">
+        <appender-ref ref="RollingFile"/>
+        <appender-ref ref="Console"/>
+    </logger>
+
+</configuration>
+
+<!--This whole logging setup is production-ready for ELK on VM-based systems, but in modern Kubernetes environments you would typically keep only console JSON logging.-->
