@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Log file (logs/jobportal.logs)
+*.log
+logs/
