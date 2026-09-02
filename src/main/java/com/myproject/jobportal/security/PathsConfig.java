@@ -8,7 +8,10 @@ import java.util.List;
 @Configuration
 public class PathsConfig {
 
-    public static final String [] PUBLIC_PATHS = {"/api/companies/public",
+    public static final String [] PUBLIC_PATHS = {
+            /** {@code "/api/companies/public"}
+             Moved this public(unsecured) companies path to the SECURED_PATHS list, just to test
+                                                       authentication through the in-memory user details in the JobPortalSecurityConfig class.*/
             "/api/contacts/public",
             "/api/swagger-ui.html",
             "/swagger-ui/**",
@@ -18,6 +21,8 @@ public class PathsConfig {
             "/webjars/**"};
 
 
-    public static final String [] SECURED_PATHS ={"/api/**"};
+    public static final String [] SECURED_PATHS ={
+            "/api/**",
+            "/api/companies/public"};
 
 }
