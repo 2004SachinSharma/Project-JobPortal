@@ -220,5 +220,66 @@ public class JobPortalSecurityConfig {
 // and sends it back to the browser. The browser then inspects these headers to decide whether to expose the data to the UI or block it.
         return source;
     }
+
+            /**
+     * InMemoryUserDetailsManager is mainly for learning/testing — it mocks the DB.
+     *
+     * Flow:
+     * {@code Login → SecurityFilterChain → AuthenticationFilter
+     *       → AuthenticationManager → DaoAuthenticationProvider
+     *       → UserDetailsService → InMemoryUserDetailsManager
+     *}
+     * Here, hard-coded users act as fake DB records.
+     * In production: InMemoryUserDetailsManager → DB-backed UserDetailsService/Repository.
+     *
+     * Used during LOGIN/authentication — not signup.
+     * For every subsequent request, authentication is performed only when the request
+     * requires authentication (e.g., authenticated() endpoint); But permitAll() requests
+     * can skip authentication.
+     *
+     * PasswordEncoder (BCrypt) is used for password hashing/verification in both
+     * learning and real applications.
+     */
+           
+            @Bean
+            public UserDetailsService userDetailsService(){
+                
+//                System.out.println("passUser:    "+passwordEncoder().encode("Sachin@123"));
+//                System.out.println("passAdmin:    "+passwordEncoder().encode("Admin@123"));
+                
+                
+//                Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//
+//                String name =  authentication.getName();
+//                String password = authentication.getCredentials().toString();
+//
+//                System.out.println("name: " + name);
+//                System.out.println("password: " + password);
+                
+                var  user1 = User.builder()
+                                     .username("sachin")
+                                     .password("$2a$10$yaKPJQUnM5eEpNIntTg.FuGcpPqcIMye1HcRVg3NH9xjNWyLyDa9e")
+                                     .roles("USER")
+                                     .build();
+                
+                var user2 = User.builder()
+                                    .username("admin")
+                                    .password("$2a$10$l8IR8SxuhDZONM41swW.Mugu5UyPGcDm/9Xth2j/iWc7kSdn5Oogu")
+                                    .roles("ADMIN")
+                                    .build();
+                
+                return new InMemoryUserDetailsManager(user1, user2);
+            }
+
+
+
+    //Creating the bean of BCryptPasswordEncoder...
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+
+
 }
 
