@@ -12,6 +12,7 @@ public class PathsConfig {
             /** {@code "/api/companies/public"}
              Moved this public(unsecured) companies path to the SECURED_PATHS list, just to test
                                                        authentication through the in-memory user details in the JobPortalSecurityConfig class.*/
+            "/api/auth/login/public",
             "/api/contacts/public",
             "/api/swagger-ui.html",
             "/swagger-ui/**",
