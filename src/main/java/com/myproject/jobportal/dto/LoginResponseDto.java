@@ -1,6 +1,6 @@
 package com.myproject.jobportal.dto;
 
 
-public record LoginResponseDto(String message, UserDto userr, String jwtToken) {
+public record LoginResponseDto(String message, UserDto user, String jwtToken) {
 }
 
