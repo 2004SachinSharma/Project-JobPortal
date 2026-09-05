@@ -2,6 +2,11 @@ package com.myproject.jobportal.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -276,7 +281,34 @@ public class JobPortalSecurityConfig {
                 return new InMemoryUserDetailsManager(user1, user2);
             }
 
-
+// Creates an AuthenticationManager bean.
+// AuthenticationManager is responsible for processing an authentication request.
+// In this configuration, we are using ProviderManager as its implementation.
+@Bean
+public AuthenticationManager authenticationManager() {
+    
+    // Creates a DaoAuthenticationProvider.
+    // DaoAuthenticationProvider authenticates users using a UserDetailsService.
+    // The UserDetailsService is responsible for loading the user's details
+    // (such as username and stored password) from the database or another data source.
+    var authenticationProvider =
+            new DaoAuthenticationProvider(userDetailsService());
+    
+    // Configures the PasswordEncoder that DaoAuthenticationProvider will use
+    // to verify the password provided by the user against the encoded password
+    // loaded by UserDetailsService.
+    authenticationProvider.setPasswordEncoder(passwordEncoder());
+    
+    // Creates a ProviderManager, which is an implementation of AuthenticationManager.
+    // ProviderManager delegates the actual authentication work to the configured
+    // AuthenticationProvider(s).
+    //
+    // Here, DaoAuthenticationProvider is registered as the provider.
+    // Therefore, when the AuthenticationManager receives an authentication request,
+    // ProviderManager delegates it to DaoAuthenticationProvider, which uses
+    // UserDetailsService and PasswordEncoder to authenticate the user.
+    return new ProviderManager(authenticationProvider);
+}
 
     //Creating the bean of BCryptPasswordEncoder...
     @Bean
