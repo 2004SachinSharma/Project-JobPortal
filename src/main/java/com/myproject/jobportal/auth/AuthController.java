@@ -3,6 +3,7 @@ package com.myproject.jobportal.auth;
 import com.myproject.jobportal.dto.LoginRequestDto;
 import com.myproject.jobportal.dto.LoginResponseDto;
 import com.myproject.jobportal.dto.UserDto;
+import com.myproject.jobportal.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
 private final AuthenticationManager authenticationManager;
-
+private final JwtUtil jwtUtil;
 @PostMapping(path = "/login/public", version= "1.0")
 
 public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto loginRequestDto) {
@@ -42,7 +43,7 @@ public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto login
        LoginResponseDto loginResponseDto = new LoginResponseDto(
                HttpStatus.OK.getReasonPhrase(),
                userDto,
-               null);
+               jwtUtil.generateJwtToken(authenticate));
        
        return ResponseEntity.ok(loginResponseDto);
        
