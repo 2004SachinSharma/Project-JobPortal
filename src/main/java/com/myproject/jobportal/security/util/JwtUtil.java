@@ -1,4 +1,4 @@
-package com.myproject.jobportal.util;
+package com.myproject.jobportal.security.util;
 
 import com.myproject.jobportal.constants.ApplicationConstants;
 import io.jsonwebtoken.Jwts;

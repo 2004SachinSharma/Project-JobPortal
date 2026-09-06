@@ -3,7 +3,7 @@ package com.myproject.jobportal.auth;
 import com.myproject.jobportal.dto.LoginRequestDto;
 import com.myproject.jobportal.dto.LoginResponseDto;
 import com.myproject.jobportal.dto.UserDto;
-import com.myproject.jobportal.util.JwtUtil;
+import com.myproject.jobportal.security.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
