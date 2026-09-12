@@ -11973,3 +11973,13 @@ VALUES ('Operations Director', 7, 'Remote', 'Hybrid', 'Freelance',
         '2025-11-12 11:27:59', 491, 0, 0,
         1, 'ACTIVE', 'SYSTEM');
 
+# //Populating data, into roles table. It shows what all roles a company defines for itself. Means anybody who has an account on the job portal may either be a Jobseeker or Employer or Admin.
+# Though we can have hundreds of such roles depending on the requirement.
+INSERT INTO roles (name, created_at, created_by)
+VALUES ('ROLE_JOB_SEEKER', CURRENT_TIMESTAMP, 'DBA');
+
+INSERT INTO roles (name, created_at, created_by)
+VALUES ('ROLE_EMPLOYER', CURRENT_TIMESTAMP, 'DBA');
+
+INSERT INTO roles (name, created_at, created_by)
+VALUES ('ROLE_ADMIN', CURRENT_TIMESTAMP, 'DBA');
