@@ -1,5 +1,6 @@
 package com.myproject.jobportal.security;
 
+import com.myproject.jobportal.security.filter.JwtTokenValidatorFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -109,6 +111,7 @@ public class JobPortalSecurityConfig {
 //                default configuration. You can do that but not by commenting but by disabling them. See below how.
 
 //                The correct way to configure it:
+                .addFilterBefore(new JwtTokenValidatorFilter(), BasicAuthenticationFilter.class)
                 .formLogin(form -> form.disable())
                 .httpBasic(withDefaults())
                 .authorizeHttpRequests(requests ->

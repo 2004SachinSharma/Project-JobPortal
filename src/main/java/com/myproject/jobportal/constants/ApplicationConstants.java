@@ -32,5 +32,5 @@ public static final String JWT_SECRET_DEFAULT_VALUE = "jxgEQeXhuPq8VdbyYFNkANdud
 
 //Important: In a real production application, avoid hardcoding the actual JWT secret in source code.
 // Use an environment variable or external secret management system.
-
+public static final String JWT_HEADER = "Authorization"; //Here we have defined the header from which the JWT Token would be picked up for validation.
 }
