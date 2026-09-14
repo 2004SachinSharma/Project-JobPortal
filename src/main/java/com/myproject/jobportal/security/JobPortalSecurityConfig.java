@@ -256,11 +256,11 @@ public class JobPortalSecurityConfig {
            
             @Bean
             public UserDetailsService userDetailsService(){
-                
+            
 //                System.out.println("passUser:    "+passwordEncoder().encode("Sachin@123"));
 //                System.out.println("passAdmin:    "+passwordEncoder().encode("Admin@123"));
-                
-                
+
+
 //                Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 //
 //                String name =  authentication.getName();
