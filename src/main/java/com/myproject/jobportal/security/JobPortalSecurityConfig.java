@@ -303,7 +303,7 @@ public AuthenticationManager authenticationManager() {
     // Configures the PasswordEncoder that DaoAuthenticationProvider will use
     // to verify the password provided by the user against the encoded password
     // loaded by UserDetailsService.
-    authenticationProvider.setPasswordEncoder(passwordEncoder());
+//    authenticationProvider.setPasswordEncoder(passwordEncoder());
     
     // Creates a ProviderManager, which is an implementation of AuthenticationManager.
     // ProviderManager delegates the actual authentication work to the configured
