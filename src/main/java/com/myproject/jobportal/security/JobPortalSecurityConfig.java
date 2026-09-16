@@ -296,8 +296,9 @@ public AuthenticationManager authenticationManager() {
     // DaoAuthenticationProvider authenticates users using a UserDetailsService.
     // The UserDetailsService is responsible for loading the user's details
     // (such as username and stored password) from the database or another data source.
-    var authenticationProvider =
-            new DaoAuthenticationProvider(userDetailsService());
+//    var authenticationProvider =
+//            new DaoAuthenticationProvider(userDetailsService());
+
     
     // Configures the PasswordEncoder that DaoAuthenticationProvider will use
     // to verify the password provided by the user against the encoded password
