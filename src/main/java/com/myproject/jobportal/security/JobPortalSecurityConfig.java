@@ -6,16 +6,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
-import org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.authentication.password.CompromisedPasswordChecker;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 import org.springframework.security.web.authentication.password.HaveIBeenPwnedRestApiPasswordChecker;
@@ -255,42 +250,42 @@ public class JobPortalSecurityConfig {
      * PasswordEncoder (BCrypt) is used for password hashing/verification in both
      * learning and real applications.
      */
-           
-            @Bean
-            public UserDetailsService userDetailsService(){
-            
-//                System.out.println("passUser:    "+passwordEncoder().encode("Sachin@123"));
-//                System.out.println("passAdmin:    "+passwordEncoder().encode("Admin@123"));
-
-
-//                Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 //
-//                String name =  authentication.getName();
-//                String password = authentication.getCredentials().toString();
+//            @Bean
+//            public UserDetailsService userDetailsService(){
 //
-//                System.out.println("name: " + name);
-//                System.out.println("password: " + password);
-                
-                var  user1 = User.builder()
-                                     .username("sachin")
-                                     .password("$2a$10$yaKPJQUnM5eEpNIntTg.FuGcpPqcIMye1HcRVg3NH9xjNWyLyDa9e")
-                                     .roles("USER")
-                                     .build();
-                
-                var user2 = User.builder()
-                                    .username("admin")
-                                    .password("$2a$10$l8IR8SxuhDZONM41swW.Mugu5UyPGcDm/9Xth2j/iWc7kSdn5Oogu")
-                                    .roles("ADMIN")
-                                    .build();
-                
-                return new InMemoryUserDetailsManager(user1, user2);
-            }
+////                System.out.println("passUser:    "+passwordEncoder().encode("Sachin@123"));
+////                System.out.println("passAdmin:    "+passwordEncoder().encode("Admin@123"));
+//
+//
+////                Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+////
+////                String name =  authentication.getName();
+////                String password = authentication.getCredentials().toString();
+////
+////                System.out.println("name: " + name);
+////                System.out.println("password: " + password);
+//
+//                var  user1 = User.builder()
+//                                     .username("sachin")
+//                                     .password("$2a$10$yaKPJQUnM5eEpNIntTg.FuGcpPqcIMye1HcRVg3NH9xjNWyLyDa9e")
+//                                     .roles("USER")
+//                                     .build();
+//
+//                var user2 = User.builder()
+//                                    .username("admin")
+//                                    .password("$2a$10$l8IR8SxuhDZONM41swW.Mugu5UyPGcDm/9Xth2j/iWc7kSdn5Oogu")
+//                                    .roles("ADMIN")
+//                                    .build();
+//
+//                return new InMemoryUserDetailsManager(user1, user2);
+//            }
 
 // Creates an AuthenticationManager bean.
 // AuthenticationManager is responsible for processing an authentication request.
 // In this configuration, we are using ProviderManager as its implementation.
 @Bean
-public AuthenticationManager authenticationManager() {
+public AuthenticationManager authenticationManager(AuthenticationProvider authenticationProvider) {
     
     // Creates a DaoAuthenticationProvider.
     // DaoAuthenticationProvider authenticates users using a UserDetailsService.
@@ -313,7 +308,21 @@ public AuthenticationManager authenticationManager() {
     // Therefore, when the AuthenticationManager receives an authentication request,
     // ProviderManager delegates it to DaoAuthenticationProvider, which uses
     // UserDetailsService and PasswordEncoder to authenticate the user.
+    
     return new ProviderManager(authenticationProvider);
+    /*to support multiple styles of authentication, like one is by using the username and password
+
+and the other one by using the OTP and the third one by using a security key and so on.
+
+In this kind of scenarios, you need to build various AuthenticationProviders that supports
+
+various authentication style.
+
+All of them, you can inject them as a dependency into the ProviderManager.
+
+So the job of the ProviderManager will be based upon the type of authentication right
+
+*/
 }
 
     //Creating the bean of BCryptPasswordEncoder...

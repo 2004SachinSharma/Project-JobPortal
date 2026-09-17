@@ -16,8 +16,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-import static org.hibernate.internal.util.collections.CollectionHelper.listOf;
-
 @Component
 @RequiredArgsConstructor
 
@@ -34,7 +32,6 @@ public class JobPortalUsernamePwdAuthenticationProvider implements Authenticatio
 
 private final JobPortalUserRepository jobPortalUserRepository;
 private final PasswordEncoder passwordEncoder;
-private JobPortalUser jobPortalUser;
 
 @Override
 public @Nullable Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -46,12 +43,12 @@ public @Nullable Authentication authenticate(Authentication authentication) thro
 			                     ));
 	
 	
-	List<SimpleGrantedAuthority> authorities = listOf(
+	List<SimpleGrantedAuthority> authorities = List.of(
 			new SimpleGrantedAuthority(user.getRole().getName())
 	);
 	
 	if (passwordEncoder.matches(authentication.getCredentials().toString(), user.getPasswordHash())) {
-		return new UsernamePasswordAuthenticationToken(username, null, authorities);
+		return new UsernamePasswordAuthenticationToken(user, null, authorities);
 	} else {
 		throw new BadCredentialsException("Invalid Password");
 	}

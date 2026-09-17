@@ -1,10 +1,10 @@
 package com.myproject.jobportal.security.util;
 
 import com.myproject.jobportal.constants.ApplicationConstants;
+import com.myproject.jobportal.entity.JobPortalUser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.core.env.Environment;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,10 +27,12 @@ public String generateJwtToken(Authentication authentication) {
             ApplicationConstants.JWT_SECRET_DEFAULT_VALUE);
     
     SecretKey secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
-    User fetchedUser =(User) authentication.getPrincipal();
+    JobPortalUser fetchedUser =(JobPortalUser) authentication.getPrincipal();
     
     jwtToken = Jwts.builder().issuer("Job Portal").subject("JWT Token") //In standard practice the issuer is named as the organization name. i.e. Google, Microsoft, Adobe...etc.
-                       .claim("username", fetchedUser.getUsername())
+                       .claim("name", fetchedUser.getName())
+                       .claim("email", fetchedUser.getEmail())
+                       .claim("mobileNumber", fetchedUser.getMobileNumber())
                        .claim("roles", authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority)
                                                .collect(Collectors.joining(",")))
                        .issuedAt(new java.util.Date())

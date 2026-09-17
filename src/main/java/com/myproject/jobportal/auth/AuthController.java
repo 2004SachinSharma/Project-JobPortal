@@ -9,6 +9,7 @@ import com.myproject.jobportal.entity.JobPortalUser;
 import com.myproject.jobportal.entity.Role;
 import com.myproject.jobportal.repository.JobPortalUserRepository;
 import com.myproject.jobportal.repository.RoleRepository;
+import com.myproject.jobportal.security.JobPortalSecurityConfig;
 import com.myproject.jobportal.security.util.JwtUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.password.CompromisedPasswordChecker;
@@ -57,9 +59,26 @@ public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto login
 		
 		Authentication authenticate = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(loginRequestDto.username(), loginRequestDto.password())
-		);
+		); //At first here the UsernamePasswordAuthenticationToken is sent to Authentication Manager which is implemented as ProviderManager in JobPortalSecurityConfig.java
+//		if you see we have returned a bean of it. So from there the ProviderManager bean is registered in to the context and injected here via constructor injection
+//		so here .authenticate() method is actually invoked from the ProviderManager bean/object. ProviderManager is responsible to iterate over all the AuthenticationProvider those are provided to it.
+//      if you will go to the same JobPortalSecurityConfig you will see that we have passed a bean of AuthenticationProvider which for which we have configured our custom AuthenticationProvider and annotated as
+//		@Component, now as JobPortalUsernamePwdAuthenticationProvider implemented the AuthenticationProvider so the bean of AuthenticationProvider will be created, and it will be injected to the ProviderManager
+//		Bean constructor via DI, upon bean creation.
+//        And then the ProviderManager will verify that whether the passed UsernamePasswordAuthenticationToken throught the .authenticate(...) method defined above, is supported by which AuthenticationProvider
+//		with the help of the support() methods of the AuthenticationProviders , like how we have defined below in our custom AuthenticationProvider (JobPortalUsernamePwdAuthenticationProvider). And as soon it finds supported one it simply passes that
+//		UsernamePasswordAuthenticationToken	to the supported AuthProvider like our custom one (JobPortalUsernamePwdAuthenticationProvider)
+//      Now if all goes fine and both username and password is correct, then JobPortalUsernamePwdAuthenticationProvider will return the authenticated Authentication object (UsernamePasswordAuthenticationToken) back to the AuthController here
+//     and is stored into this same variable above  named as 'authenticate'
+
+//And then in the below steps the principle is extracted out, and the same UsernamePasswordAuthenticationToken is passed for generation of JWT, and finally after all is done the Response is sent back with HttpStatus with message, userDetails, and Token
 		
 		UserDto userDto = new UserDto();
+		JobPortalUser loggedInUser = (JobPortalUser) authenticate.getPrincipal();
+		
+		BeanUtils.copyProperties(loggedInUser, userDto);
+		userDto.setRole(loggedInUser.getRole().getName());
+		userDto.setUserId(loggedInUser.getId());
 		
 		LoginResponseDto loginResponseDto = new LoginResponseDto(
 				HttpStatus.OK.getReasonPhrase(),
