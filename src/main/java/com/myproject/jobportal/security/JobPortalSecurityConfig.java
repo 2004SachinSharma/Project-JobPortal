@@ -14,6 +14,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.password.HaveIBeenPwnedRestApiPasswordChecker;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
+import org.springframework.security.web.csrf.CsrfTokenRequestHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -95,7 +98,9 @@ SecurityFilterChain customSecurityFilterChain(HttpSecurity http) {
 	 In simple terms: authentication may or may not exist, but authorization always passes (true).*/
 
 //        return http.authorizeHttpRequests((requests) -> ((AuthorizeHttpRequestsConfigurer.AuthorizedUrl) requests.anyRequest()).permitAll()) //PermitAll permits all requests by bypassing the authentication. Means the request is still checked by the security framework, but the framework chooses to always open the gate (true) rather than blocking it.
-	return http.csrf(csrfConfig -> csrfConfig.disable())
+	return http.csrf(csrfConfig -> csrfConfig
+			                               .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+			                               .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler()))
 			       .cors(corsConfig -> corsConfig.configurationSource(corsConfigurationSource()))
 
 //                .formLogin(Customizer.withDefaults())
@@ -108,7 +113,7 @@ SecurityFilterChain customSecurityFilterChain(HttpSecurity http) {
 //                The correct way to configure it:
 			       .addFilterBefore(new JwtTokenValidatorFilter(), BasicAuthenticationFilter.class)
 			       .formLogin(form -> form.disable())
-			       .httpBasic(withDefaults())
+			       .httpBasic(httpbasic -> httpbasic.disable())
 			       .authorizeHttpRequests(requests ->
 					                              // METHOD 1:
 /*
@@ -204,7 +209,9 @@ public CorsConfigurationSource corsConfigurationSource() {
 
 // allowedHeaders() specifies which request headers are permitted during cross-origin requests.
 // If the frontend sends headers not included in Access-Control-Allow-Headers, the browser blocks the actual request after the preflight validation fails.
-	corsConfiguration.setAllowedHeaders(Arrays.asList("Content-Type"));
+//	corsConfiguration.setAllowedHeaders(Arrays.asList("Content-Type", "X-XSRF-TOKEN","Authorization"));
+	corsConfiguration.setAllowedHeaders(Arrays.asList("*"));
+
 
 // setAllowCredentials: Set this to 'true' if the browser needs to send Cookies or Authorization headers.
 // Note: If this is set to 'true', using the wildcard '*' in setAllowedOrigins is strictly prohibited (Security Rule).
