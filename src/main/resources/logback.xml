@@ -11,8 +11,13 @@
     <!-- ===================== -->
     <!-- Console Appender -->
     <!-- ===================== -->
+<!--    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">-->
+<!--        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>-->
+<!--    </appender>-->
     <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} %highlight(%-5level) [%thread] %cyan(%logger{36}) - %msg%n</pattern>
+        </encoder>
     </appender>
 
     <!-- ===================== -->
