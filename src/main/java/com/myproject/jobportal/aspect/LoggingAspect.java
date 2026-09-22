@@ -11,7 +11,7 @@ import java.util.Arrays;
 @Aspect
 @Component
 @Slf4j
-public class LoggingAndPerformanceAspect {
+public class LoggingAspect {
 
 // @Around("@annotation(com.eazybytes.jobportal.aspects.LogAspect)")
 @Around("execution(* com.myproject.jobportal..*.*(..))")
