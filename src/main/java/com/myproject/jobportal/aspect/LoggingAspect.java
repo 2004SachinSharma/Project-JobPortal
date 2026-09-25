@@ -31,7 +31,7 @@ public Object logAndMeasureExecutionTime(ProceedingJoinPoint joinPoint) throws T
 		//and then from here the result be returned as response.
 	} finally {
 		log.info("✅ Method executed successfully: {}", methodName);
-		log.info("[Info] Method {} returned {} ", methodName, result);
+		log.info("[Info] Method {} returned {} ", methodName);
 	}
 	
 	return result;
