@@ -3,6 +3,7 @@ package com.myproject.jobportal.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.BatchSize;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -55,6 +56,10 @@ public class Company extends BaseEntity {
      @Column(name = "WEBSITE", length = 500)
      private String website;
 
+     /** The @BatchSize annotation is used to optimize the fetching of lazy-loaded collections by specifying
+      the number of entities to be loaded in a single batch, effectively reducing the N+1 select problem. But
+      still not the perfect solution.  But query reduced from N+1 to 1+ (N/Batch size)*/
+     @BatchSize(size = 15)
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Job> jobs = new ArrayList<>();
 
