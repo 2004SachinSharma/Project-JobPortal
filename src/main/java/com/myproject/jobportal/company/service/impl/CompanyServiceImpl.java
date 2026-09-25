@@ -1,5 +1,6 @@
 package com.myproject.jobportal.company.service.impl;
 
+import com.myproject.jobportal.constants.ApplicationConstants;
 import com.myproject.jobportal.dto.CompanyDto;
 import com.myproject.jobportal.dto.JobDto;
 import com.myproject.jobportal.entity.Company;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,8 +28,7 @@ public class CompanyServiceImpl implements ICompanyService {
 
     @Override
     public List<CompanyDto> getAllCompanies() {
-
-        List<Company> companyList = companyRepository.findAll();
+        List<Company> companyList = companyRepository.findAllWithJobsByStatus(ApplicationConstants.JOB_STATUS_ACTIVE);
         // companyList: Database se aayi hui Company objects ki list.
 
         return companyList.stream().map(this::transformCompanyToDto).collect(Collectors.toList());

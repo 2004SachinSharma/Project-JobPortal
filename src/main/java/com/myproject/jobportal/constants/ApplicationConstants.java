@@ -36,4 +36,11 @@ public static final String JWT_HEADER = "Authorization"; //Here we have defined 
 
 public static final String ROLE_JOB_SEEKER = "ROLE_JOB_SEEKER";
 
+public static final String JOB_STATUS_ACTIVE = 	"ACTIVE";
+
+public static final String JOB_STATUS_INACTIVE = 	"INACTIVE";
+
+
+
+
 }

@@ -10,7 +10,12 @@ package com.myproject.jobportal.repository;
 
 import com.myproject.jobportal.entity.Company;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
 
 @Repository //Optional annotation is completely optional.Even though if you're not mentioning these annotations, still the bean of this interface
 //is going to be created during the startup of the application.
@@ -37,5 +42,14 @@ import org.springframework.stereotype.Repository;
 //Let's try to do the same.
 
 public interface CompanyRepository extends JpaRepository<Company,Long> {
+
+//@Query("select DISTINCT c, j from Company c join fetch c.jobs j where j.status = :status ") //"When using JPQL, the Persistence Context behaves identically to derived query methods during entity hydration. The Persistence Context is only bypassed during bulk modifying operations (@Modifying UPDATE/DELETE) or when fetching non-entity DTO projections."
+// Overrides the inherited JpaRepository.findAll(String status) method to execute custom query logic (e.g., JOIN FETCH, filtering)
+
+//But
+
+// Preferred approach: Use a descriptive method name instead of shadowing findAll()
+@Query("SELECT DISTINCT c FROM Company c JOIN FETCH c.jobs j WHERE j.status = :status")
+	List<Company> findAllWithJobsByStatus(@Param(value = "status")String status);
 
 }
