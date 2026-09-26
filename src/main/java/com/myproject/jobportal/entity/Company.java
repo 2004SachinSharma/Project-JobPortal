@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -61,6 +62,7 @@ public class Company extends BaseEntity {
       still not the perfect solution.  But query reduced from N+1 to 1+ (N/Batch size)*/
      @BatchSize(size = 15)
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
+     @SQLRestriction("status = 'ACTIVE'")
     private List<Job> jobs = new ArrayList<>();
 
     //Shifted Created_at and Created_by Columns to the BaseEntityClass in order to leverage JPA Auditing

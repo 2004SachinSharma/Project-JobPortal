@@ -49,7 +49,43 @@ public interface CompanyRepository extends JpaRepository<Company,Long> {
 //But
 
 // Preferred approach: Use a descriptive method name instead of shadowing findAll()
-@Query("SELECT DISTINCT c FROM Company c JOIN FETCH c.jobs j WHERE j.status = :status")
-	List<Company> findAllWithJobsByStatus(@Param(value = "status")String status);
+//@Query("SELECT DISTINCT c FROM Company c JOIN FETCH c.jobs j WHERE j.status = :status")
+//	List<Company> findAllWithJobsByStatus(@Param(value = "status")String status);
+
+//Lets see native SQL too
+
+@Query(value = """
+       SELECT DISTINCT c.* FROM companies c
+       JOIN jobs j ON c.id = j.company_id
+       WHERE j.status = :status
+       """, nativeQuery = true)
+List<Company> findAllWithJobsByStatus(@Param("status") String status);
+
+/**
+ * ISSUES WITH THIS NATIVE QUERY:
+ *
+ * 1. N+1 SELECT PROBLEM:
+ *    Because this query only selects 'c.*', Hibernate loads Company entities with uninitialized
+ *    (LAZY) 'jobs' collections. Iterating through 'company.getJobs()' will trigger 1 additional
+ *    SQL query per Company to load its child jobs.
+ *
+ * 2. UNFILTERED CHILD COLLECTION (CLOSED JOBS ARE LOADED):
+ *    The 'WHERE j.status = :status' clause only filters WHICH Companies are returned, but not WHICH Jobs are returned.
+ *    When Hibernate later initializes 'company.getJobs()' via lazy loading, it fetches ALL jobs
+ *    belonging to that company from the database, including 'CLOSED' ones.
+ *    [Solution: use @SQLRestriction("parameter = 'Value'") i.e. @SQLRestriction("status = 'ACTIVE'") on top of the column name in the parent entity definition i.e. Company]
+ *
+ * 3. DUPLICATE ENTITIES:
+ *    If a company has 3 ACTIVE jobs, the SQL JOIN returns 3 duplicate company rows.
+ *    Adding 'DISTINCT c.*' (or handling it at the entity level) is required to avoid duplicate Company objects.
+ */
+
+
+//@Query(value = """
+//		SELECT c.*,j.* FROM companies c // it have same id alias for jobs and companies orimary key (id) so error will be thrown at runtime
+//		    JOIN jobs j
+//		        on c.id = j.company_id
+//		           WHERE j.status = ?1""", nativeQuery = true)
+//	List<Company> findAllWithJobsByStatus(@Param(value = "status")String status);
 
 }
