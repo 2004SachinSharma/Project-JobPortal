@@ -8,5 +8,6 @@ import java.util.List;
 
 public interface ContactRepository extends JpaRepository<Contact, Long> {
 
- public List<Contact> getContactsByStatus(String status);
+// public List<Contact> getContactsByStatus(String status);
+ public List<Contact> getContactsByStatusOrderById(String status);
 }

@@ -64,7 +64,7 @@ public class ContactServiceImpl implements IContactService {
     }
     @PreAuthorize("hasAuthority('ROLE_ADMIN')") //It's method level security.(Fine-Grained authorization)
     public List<ContactResponseDto> getAllContactsByStatus(){
-        List<Contact> contacts = contactRepository.getContactsByStatus(ApplicationConstants.MESSAGE_STATUS_NEW);
+        List<Contact> contacts = contactRepository.getContactsByStatusOrderById(ApplicationConstants.MESSAGE_STATUS_NEW);
         
         List<ContactResponseDto> contactResponseDtoList = contacts.stream().map(this::transformToDto).collect(Collectors.toList());
         
