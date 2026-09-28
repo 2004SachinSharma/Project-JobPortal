@@ -26,6 +26,11 @@ public class PathsConfig {
 
 
     public static final String [] SECURED_PATHS ={
-            "/api/**"};
+            "/api/**",
+    };
+
+    public static final String [] ADMIN_PATHS ={
+            "/api/contacts/admin",
+    };
 
 }

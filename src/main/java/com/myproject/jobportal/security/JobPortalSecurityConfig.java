@@ -7,6 +7,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.password.CompromisedPasswordChecker;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -27,6 +28,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity // Required for @PreAuthorize, @PostAuthorize, @Secured
 public class JobPortalSecurityConfig {
 
 /**
@@ -145,6 +147,7 @@ SecurityFilterChain customSecurityFilterChain(HttpSecurity http) {
 					                              // Using a static array from a separate class is completely clean, fast, and a production-ready way to manage Method 1.
 					                              
 					                              requests.requestMatchers(PathsConfig.PUBLIC_PATHS).permitAll()
+							                              .requestMatchers(PathsConfig.ADMIN_PATHS).hasRole("ADMIN") //NO need to add ROLE_ , it automatically attaches that prefix, It's coarse grained authorization. Another is also there, that is through method level authorization, will see later
 							                              .requestMatchers(PathsConfig.SECURED_PATHS).authenticated()
 							                              .anyRequest().denyAll()
 			       

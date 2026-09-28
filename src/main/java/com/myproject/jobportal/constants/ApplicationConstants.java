@@ -40,7 +40,8 @@ public static final String JOB_STATUS_ACTIVE = 	"ACTIVE";
 
 public static final String JOB_STATUS_INACTIVE = 	"INACTIVE";
 
+public static final String MESSAGE_STATUS_NEW = 	"NEW";
 
-
+public static final String MESSAGE_STATUS_CLOSED = 	"CLOSED";
 
 }

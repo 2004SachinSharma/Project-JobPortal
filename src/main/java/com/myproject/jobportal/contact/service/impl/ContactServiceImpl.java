@@ -1,18 +1,19 @@
 package com.myproject.jobportal.contact.service.impl;
 
+import com.myproject.jobportal.constants.ApplicationConstants;
 import com.myproject.jobportal.contact.service.IContactService;
 import com.myproject.jobportal.dto.ContactRequestDto;
 
+import com.myproject.jobportal.dto.ContactResponseDto;
 import com.myproject.jobportal.entity.Contact;
 import com.myproject.jobportal.repository.ContactRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
-import lombok.extern.log4j.Log4j;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -61,4 +62,20 @@ public class ContactServiceImpl implements IContactService {
         return contact;
 
     }
+    public List<ContactResponseDto> getAllContactsByStatus(){
+        List<Contact> contacts = contactRepository.getContactsByStatus(ApplicationConstants.MESSAGE_STATUS_NEW);
+        
+        List<ContactResponseDto> contactResponseDtoList = contacts.stream().map(this::transformToDto).collect(Collectors.toList());
+        
+        return contactResponseDtoList;
+        
+    }
+    
+    private  ContactResponseDto transformToDto(Contact contact){
+        
+        return new ContactResponseDto(contact.getId(),contact.getName(),contact.getEmail(),contact.getUserType(),contact.getSubject(),contact.getMessage(), contact.getStatus(), contact.getCreatedAt());
+        
+    }
+
+    
 }
