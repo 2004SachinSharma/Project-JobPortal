@@ -62,6 +62,7 @@ public class ContactServiceImpl implements IContactService {
         return contact;
 
     }
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')") //It's method level security.(Fine-Grained authorization)
     public List<ContactResponseDto> getAllContactsByStatus(){
         List<Contact> contacts = contactRepository.getContactsByStatus(ApplicationConstants.MESSAGE_STATUS_NEW);
         
