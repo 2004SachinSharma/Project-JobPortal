@@ -9,4 +9,5 @@ public interface IContactService {
 
     boolean saveContact(ContactRequestDto contactRequestDto) ;
     List<ContactResponseDto> getAllContactsByStatus();
+    List<ContactResponseDto> getAllContactsByStatusWithSorting(String sortBy, String sortDirection);
 }

@@ -1,7 +1,6 @@
 package com.myproject.jobportal.contact.controller;
 
 import com.myproject.jobportal.contact.service.IContactService;
-import com.myproject.jobportal.contact.service.impl.ContactServiceImpl;
 import com.myproject.jobportal.dto.ContactRequestDto;
 import com.myproject.jobportal.dto.ContactResponseDto;
 import jakarta.validation.Valid;
@@ -38,6 +37,14 @@ public ResponseEntity<List<ContactResponseDto>> fetchOpenContacts() {
 	List<ContactResponseDto> openContacts = contactService.getAllContactsByStatus();
 	return ResponseEntity.ok().body(openContacts);
 	
+}
+
+@GetMapping(path="/sorting/admin", version="1.0")
+public ResponseEntity<List<ContactResponseDto>> fetchOpenContactsWithSorting(
+		@RequestParam(defaultValue = "createdAt", name = "sortby") String sortBy,
+		@RequestParam(defaultValue = "asc", name = "sortdir")String sortDir
+) {
+	return ResponseEntity.ok(contactService.getAllContactsByStatusWithSorting(sortBy, sortDir));
 }
 
 }

@@ -31,6 +31,7 @@ public class PathsConfig {
 
     public static final String [] ADMIN_PATHS ={
             "/api/contacts/admin",
+            "/api/contacts/sorting/admin"
     };
 
 }
