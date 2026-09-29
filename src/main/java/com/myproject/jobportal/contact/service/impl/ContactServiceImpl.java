@@ -8,11 +8,15 @@ import com.myproject.jobportal.entity.Contact;
 import com.myproject.jobportal.repository.ContactRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -90,5 +94,31 @@ public List<ContactResponseDto> getAllContactsByStatusWithSorting(String sortBy,
 	
 }
 
-
+@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+public Page<ContactResponseDto> getAllContactsByStatusWithSortingAndPagination(int pageNumber, int pageSize, String sortBy, String sortDirection) {
+	
+	Sort sort = sortDirection.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+	Pageable pageRequest = PageRequest.of(pageNumber,pageSize,sort);
+	
+	Page<Contact> contactPages = contactRepository.getContactsByStatus(ApplicationConstants.MESSAGE_STATUS_NEW, pageRequest );
+	
+	return contactPages.map(this::transformToDto);
+	
 }
+
+@Override
+public boolean changeContactStatustoClosed(Long id) {
+	  Contact contact = contactRepository.findById(id).orElse(null);
+      if(contact != null) {
+		      contact.setStatus(ApplicationConstants.MESSAGE_STATUS_CLOSED);
+		      contactRepository.save(contact);
+	      }else {
+	      return false;
+      }
+	  return true;
+}
+
+	
+}
+
+

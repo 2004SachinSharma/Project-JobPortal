@@ -200,7 +200,7 @@ public CorsConfigurationSource corsConfigurationSource() {
 
 // setAllowedMethods: The server informs the browser about which HTTP actions (GET, POST, etc.) the client is permitted to perform.
 // If this is not explicitly mentioned, the browser will only allow 'Safe' requests (like a simple GET) by default.
-	corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+	corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH"));
 
 // corsConfiguration.setAllowedMethods(Collections.singletonList("*")); // This allows all methods.
 // This is a static method from the java.util.Collections class that creates an immutable List containing exactly ONE item.
